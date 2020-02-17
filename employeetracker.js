@@ -75,14 +75,67 @@ function runSearch() {
     });
 }
 
+
+
 function employeeViewAll() {
-  console.table([
-    {
-      name: 'foo',
-      age: 10
-    }, {
-      name: 'bar',
-      age: 20
-    }
-  ]);
+  inquirer
+    .prompt({
+      name: "first_name",
+      type: "input",
+      message: "View All?"
+    })
+    .then(function(answer) {
+      console.log(answer.first_name);
+      connection.query("SELECT * FROM employee WHERE ?", { song: answer.first_name }, function (err, res) {
+
+        console.table(
+          ['id', 'first_name', 'last_name', 'role_id', 'manager_id']
+        );
+        runSearch();
+      });
+    });
+}
+
+function employeeByDepartment() {
+  inquirer
+    .prompt({
+      name: "department",
+      type: "input",
+      message: "What department would you like to view employees from?"
+    })
+    .then(function (answer) {
+      var query = "SELECT id, name FROM department WHERE ?";
+      connection.query(query, { artist: answer.artist }, function (err, res) {
+    
+
+        for (var i = 0; i < res.length; i++) {
+          console.table(
+            ['id', 'first_name']
+          );
+          runSearch();
+        };
+      });
+    })
+}
+
+function employeeByManager() {
+  inquirer
+    .prompt({
+      name: "manager",
+      type: "input",
+      message: "What manager's employees would you like to view?"
+    })
+    .then(function (answer) {
+      var query = "SELECT * FROM employee WHERE manager_id ?";
+      connection.query(query, { artist: answer.artist }, function (err, res) {
+    
+
+        for (var i = 0; i < res.length; i++) {
+          console.table(
+            ['employee']
+          );
+          runSearch();
+        };
+      });
+    })
 }
