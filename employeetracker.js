@@ -86,7 +86,7 @@ function employeeViewAll() {
     })
     .then(function(answer) {
       console.log(answer.first_name);
-      connection.query("SELECT * FROM employee WHERE ?", { song: answer.first_name }, function (err, res) {
+      connection.query("SELECT * FROM employee WHERE ?", { first_name: answer.first_name }, function (err, res) {
 
         console.table(
           ['id', 'first_name', 'last_name', 'role_id', 'manager_id']
@@ -105,7 +105,7 @@ function employeeByDepartment() {
     })
     .then(function (answer) {
       var query = "SELECT id, name FROM department WHERE ?";
-      connection.query(query, { artist: answer.artist }, function (err, res) {
+      connection.query(query, { employee: answer.employee }, function (err, res) {
     
 
         for (var i = 0; i < res.length; i++) {
@@ -127,7 +127,7 @@ function employeeByManager() {
     })
     .then(function (answer) {
       var query = "SELECT * FROM employee WHERE manager_id ?";
-      connection.query(query, { artist: answer.artist }, function (err, res) {
+      connection.query(query, { employee: answer.employee }, function (err, res) {
     
 
         for (var i = 0; i < res.length; i++) {
