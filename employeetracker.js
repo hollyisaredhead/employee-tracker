@@ -139,3 +139,42 @@ function employeeByManager() {
       });
     })
 }
+
+function addEmployee() {
+  inquirer
+    .prompt({
+      name: "first_name",
+      type: "input",
+      message: "What is your employees first name? "
+    })
+    .prompt({
+      name: "last_name",
+      type: "input",
+      message: "What is your employees last name? "
+    })
+    .prompt({
+      name: "role",
+      type: "list",
+      message: "What is your employees role?",
+      choices: [
+        "Sales Lead",
+        "Salesperson",
+        "Lead Engineer",
+        "Software Engineer",
+        "Account Manager",
+        "Accountant",
+        "Legal Team Lead",
+        "exit"
+      ]
+    })
+    .then(function(answer) {
+      console.log(answer.first_name);
+      connection.query("INSERT INTO employee", { first_name: answer.first_name, last_name: answer.last_name, role: answer.role_id }, function (err, res) {
+
+        console.table(
+          ['id', 'first_name', 'last_name', 'role_id', 'manager_id']
+        );
+        runSearch();
+      });
+    });
+}
