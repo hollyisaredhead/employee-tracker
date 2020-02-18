@@ -169,7 +169,7 @@ function addEmployee() {
     })
     .then(function(answer) {
       console.log(answer.first_name);
-      connection.query("INSERT INTO employee", { first_name: answer.first_name, last_name: answer.last_name, role: answer.role_id }, function (err, res) {
+      connection.query("INSERT INTO employee SET ?", { first_name: answer.first_name, last_name: answer.last_name, role: answer.role_id }, function (err, res) {
 
         console.table(
           ['id', 'first_name', 'last_name', 'role_id', 'manager_id']
