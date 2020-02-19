@@ -1,6 +1,6 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
-const cTable = require('console.table');
+//const cTable = require('console.table');
 
 var connection = mysql.createConnection({
   host: "localhost",
@@ -80,16 +80,16 @@ function runSearch() {
 function employeeViewAll() {
   inquirer
     .prompt({
-      name: "first_name",
+      name: "view",
       type: "input",
       message: "View All?"
     })
-    .then(function(answer) {
+    .then(function (answer) {
       console.log(answer.first_name);
-      connection.query("SELECT * FROM employee WHERE ?", { first_name: answer.first_name }, function (err, res) {
+      connection.query("SELECT * FROM employee WHERE (first_name, last_name, role_id, manager_id)", function (err, res) {
 
         console.table(
-          ['id', 'first_name', 'last_name', 'role_id', 'manager_id']
+          ['first_name, last_name, role_id, manager_id)']
         );
         runSearch();
       });
@@ -106,14 +106,14 @@ function employeeByDepartment() {
     .then(function (answer) {
       var query = "SELECT id, name FROM department WHERE ?";
       connection.query(query, { employee: answer.employee }, function (err, res) {
-    
 
-        for (var i = 0; i < res.length; i++) {
-          console.table(
-            ['id', 'first_name']
-          );
-          runSearch();
-        };
+
+        // for (var i = 0; i < res.length; i++) {
+        //   console.table(
+        //     ['id', 'first_name']
+        //   );
+        //   runSearch();
+        // };
       });
     })
 }
@@ -127,8 +127,8 @@ function employeeByManager() {
     })
     .then(function (answer) {
       var query = "SELECT * FROM employee WHERE manager_id ?";
-      connection.query(query, { employee: answer.employee }, function (err, res) {
-    
+      connection.query(query, { employee: answer.manager }, function (err, res) {
+
 
         for (var i = 0; i < res.length; i++) {
           console.table(
@@ -142,39 +142,44 @@ function employeeByManager() {
 
 function addEmployee() {
   inquirer
-    .prompt({
-      name: "first_name",
-      type: "input",
-      message: "What is your employees first name? "
-    })
-    .prompt({
-      name: "last_name",
-      type: "input",
-      message: "What is your employees last name? "
-    })
-    .prompt({
-      name: "role",
-      type: "list",
-      message: "What is your employees role?",
-      choices: [
-        "Sales Lead",
-        "Salesperson",
-        "Lead Engineer",
-        "Software Engineer",
-        "Account Manager",
-        "Accountant",
-        "Legal Team Lead",
-        "exit"
-      ]
-    })
-    .then(function(answer) {
-      console.log(answer.first_name);
-      connection.query("INSERT INTO employee SET ?", { first_name: answer.first_name, last_name: answer.last_name, role: answer.role_id }, function (err, res) {
+    .prompt([
+      {
+        name: "first_name",
+        type: "input",
+        message: "What is your employees first name? "
+      },
 
-        console.table(
-          ['id', 'first_name', 'last_name', 'role_id', 'manager_id']
-        );
-        runSearch();
-      });
+      {
+        name: "last_name",
+        type: "input",
+        message: "What is your employees last name? "
+      },
+
+      {
+        name: "role",
+        type: "list",
+        message: "What is your employees role?",
+        choices: [
+          "Sales Lead",
+          "Salesperson",
+          "Lead Engineer",
+          "Software Engineer",
+          "Account Manager",
+          "Accountant",
+          "Legal Team Lead",
+          "exit"
+        ]
+      }
+    ])
+
+    .then(function (answer) {
+      console.log(answer.first_name);
+      connection.query("INSERT INTO employee (first_name, last_name, role_id) VALUES ?", [answer.first_name, answer.last_name, answer.role_id], function (err, res) {
+        console.log("Successfully added!")
+
+        employeeViewAll();
+      })
+
     });
+
 }
