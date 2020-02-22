@@ -85,12 +85,14 @@ function employeeViewAll() {
       message: "View All?"
     })
     .then(function (answer) {
-      console.log(answer.first_name);
-      connection.query("SELECT * FROM employee WHERE (first_name, last_name, role_id, manager_id)", function (err, res) {
+      console.log(answer.view);
+      connection.query("SELECT * FROM employee", function (err, res) {
+        
+          console.table(
+            res
 
-        console.table(
-          ['first_name, last_name, role_id, manager_id)']
-        );
+          );
+       
         runSearch();
       });
     });
@@ -104,7 +106,7 @@ function employeeByDepartment() {
       message: "What department would you like to view employees from?"
     })
     .then(function (answer) {
-      var query = "SELECT id, name FROM department WHERE ?";
+      var query = "SELECT * ";
       connection.query(query, { employee: answer.employee }, function (err, res) {
 
 

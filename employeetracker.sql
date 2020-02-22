@@ -29,3 +29,19 @@ CREATE TABLE employee (
   manager_id int,
   PRIMARY KEY (id)
 );
+
+ALTER TABLE employeetracker.employee MODIFY role_id varchar(30) NOT NULL;
+ALTER TABLE employeetracker.employee MODIFY id int auto_increment;
+
+INSERT INTO employeetracker.employee(
+first_name,
+last_name,
+role_id
+)
+VALUES(
+"holly", 
+"phelps",
+"designer"
+);
+
+SELECT * FROM employeetracker.employee
