@@ -2,19 +2,32 @@ var mysql = require("mysql");
 var inquirer = require("inquirer");
 //const cTable = require('console.table');
 
-var connection = mysql.createConnection({
-  host: "localhost",
+var connection;
 
-  // Your port; if not 3306
-  port: 3306,
+if (process.env.JAWSDB_URL) {
+  connection = mysql.createConnection(process.env.JAWSDB_URL);
+} else {
+  connection = mysql.createConnection({
+    host: 'hngomrlb3vfq3jcr.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
+    user: 'oea2fmcvortl52kd',
+    password: 'pj3an0la5zjr28xg',
+    database: 'k2p20usrsos229by'
+  })
+}
 
-  // Your username
-  user: "root",
+//   mysql.createConnection({
+//   host: "localhost",
 
-  // Your password
-  password: "Zero617Strong",
-  database: "employeetracker"
-});
+//   // Your port; if not 3306
+//   port: 3306,
+
+//   // Your username
+//   user: "root",
+
+//   // Your password
+//   password: "Zero617Strong",
+//   database: "employeetracker"
+// });
 
 connection.connect(function (err) {
   if (err) throw err;
