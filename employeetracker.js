@@ -2,32 +2,32 @@ var mysql = require("mysql");
 var inquirer = require("inquirer");
 //const cTable = require('console.table');
 
-var connection;
+// var connection;
 
-if (process.env.JAWSDB_URL) {
-  connection = mysql.createConnection(process.env.JAWSDB_URL);
-} else {
-  connection = mysql.createConnection({
-    host: 'hngomrlb3vfq3jcr.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
-    user: 'oea2fmcvortl52kd',
-    password: 'pj3an0la5zjr28xg',
-    database: 'k2p20usrsos229by'
-  })
-}
+// if (process.env.JAWSDB_URL) {
+//   connection = mysql.createConnection(process.env.JAWSDB_URL);
+// } else {
+//   connection = mysql.createConnection({
+//     host: 'hngomrlb3vfq3jcr.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
+//     user: 'oea2fmcvortl52kd',
+//     password: 'pj3an0la5zjr28xg',
+//     database: 'k2p20usrsos229by'
+//   })
+// }
 
-//   mysql.createConnection({
-//   host: "localhost",
+var connection = mysql.createConnection({
+  host: "localhost",
 
-//   // Your port; if not 3306
-//   port: 3306,
+  // Your port; if not 3306
+  port: 3306,
 
-//   // Your username
-//   user: "root",
+  // Your username
+  user: "root",
 
-//   // Your password
-//   password: "Zero617Strong",
-//   database: "employeetracker"
-// });
+  // Your password
+  password: "Zero617Strong",
+  database: "employeetracker"
+});
 
 connection.connect(function (err) {
   if (err) throw err;
@@ -111,49 +111,49 @@ function employeeViewAll() {
     });
 }
 
-function employeeByDepartment() {
-  inquirer
-    .prompt({
-      name: "department",
-      type: "input",
-      message: "What department would you like to view employees from?"
-    })
-    .then(function (answer) {
-      var query = "SELECT * ";
-      connection.query(query, { employee: answer.employee }, function (err, res) {
+// function employeeByDepartment() {
+//   inquirer
+//     .prompt({
+//       name: "department",
+//       type: "input",
+//       message: "What department would you like to view employees from?"
+//     })
+//     .then(function (answer) {
+//       var query = "SELECT * ";
+//       connection.query(query, { employee: answer.employee }, function (err, res) {
 
 
-        // for (var i = 0; i < res.length; i++) {
-        //   console.table(
-        //     ['id', 'first_name']
-        //   );
-        //   runSearch();
-        // };
-      });
-    })
-}
+//         // for (var i = 0; i < res.length; i++) {
+//         //   console.table(
+//         //     ['id', 'first_name']
+//         //   );
+//         //   runSearch();
+//         // };
+//       });
+//     })
+// }
 
-function employeeByManager() {
-  inquirer
-    .prompt({
-      name: "manager",
-      type: "input",
-      message: "What manager's employees would you like to view?"
-    })
-    .then(function (answer) {
-      var query = "SELECT * FROM employee WHERE manager_id ?";
-      connection.query(query, { employee: answer.manager }, function (err, res) {
+// function employeeByManager() {
+//   inquirer
+//     .prompt({
+//       name: "manager",
+//       type: "input",
+//       message: "What manager's employees would you like to view?"
+//     })
+//     .then(function (answer) {
+//       var query = "SELECT * FROM employee WHERE manager_id ?";
+//       connection.query(query, { employee: answer.manager }, function (err, res) {
 
 
-        for (var i = 0; i < res.length; i++) {
-          console.table(
-            ['employee']
-          );
-          runSearch();
-        };
-      });
-    })
-}
+//         for (var i = 0; i < res.length; i++) {
+//           console.table(
+//             ['employee']
+//           );
+//           runSearch();
+//         };
+//       });
+//     })
+// }
 
 function addEmployee() {
   inquirer
@@ -171,7 +171,7 @@ function addEmployee() {
       },
 
       {
-        name: "role",
+        name: "role_id",
         type: "list",
         message: "What is your employees role?",
         choices: [
@@ -191,10 +191,33 @@ function addEmployee() {
       console.log(answer.first_name);
       connection.query("INSERT INTO employee (first_name, last_name, role_id) VALUES ?", [answer.first_name, answer.last_name, answer.role_id], function (err, res) {
         console.log("Successfully added!")
+        console.table(
+          res
 
+        );
         employeeViewAll();
       })
 
     });
 
 }
+// function removeEmployee() {
+//   inquirer
+//     .prompt({
+//       name: "view",
+//       type: "input",
+//       message: "What employee would you like to delete?"
+//     })
+//     .then(function (answer) {
+//       console.log(answer.view);
+//       connection.query("DELETE FROM employee WHERE id", function (err, res) {
+        
+//           console.table(
+//             res
+
+//           );
+       
+//         runSearch();
+//       });
+//     });
+// }

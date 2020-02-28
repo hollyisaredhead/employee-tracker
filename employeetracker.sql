@@ -44,4 +44,15 @@ VALUES(
 "designer"
 );
 
+INSERT INTO employeetracker.employee(
+first_name,
+last_name,
+role_id
+)
+VALUES(
+"christine", 
+"tori",
+"Sales Lead"
+);
+
 SELECT * FROM employeetracker.employee
